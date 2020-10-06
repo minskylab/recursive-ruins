@@ -1,0 +1,28 @@
+version: "3"
+
+tasks:
+  build:
+    cmds:
+      - GOOS=js GOARCH=wasm go build -o site/assets/text-automaton.wasm .
+  dev:
+    dir: site
+    cmds:
+      - task: build
+      - serve
+
+  compile:
+    cmds:
+      - task: build
+      - docker build -t textautomaton .
+
+  run:
+    cmds:
+      - task: compile
+      - docker run -p 8080:80 textautomaton
+
+  publish:
+    cmds:
+      - task: build
+      - docker build -t docker.minsky.cc/recurrent-ruins .
+      - docker push docker.minsky.cc/recurrent-ruins
+      - kubectl apply -f k8s.yaml

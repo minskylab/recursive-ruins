@@ -1,0 +1,63 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: recurrentruins
+  namespace: minsky
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    cert-manager.io/cluster-issuer: buypass
+spec:
+  tls:
+    - hosts:
+        - rruins.experimental.minsky.cc
+      secretName: rruins.experimental.minsky.cc-cert
+  rules:
+    - host: rruins.experimental.minsky.cc
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: recurrentruins
+              servicePort: web
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: recurrentruins
+  namespace: minsky
+spec:
+  selector:
+    app: recurrentruins
+  type: ClusterIP
+  ports:
+    - name: web
+      port: 80
+      targetPort: 80
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recurrentruins
+  namespace: minsky
+  labels:
+    app: recurrentruins
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: recurrentruins
+  template:
+    metadata:
+      name: recurrentruins
+      labels:
+        app: recurrentruins
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      containers:
+        - name: recurrentruins
+          image: docker.minsky.cc/recurrent-ruins
+          imagePullPolicy: Always
+      restartPolicy: Always

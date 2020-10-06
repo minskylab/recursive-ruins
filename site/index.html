@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Recursive Ruins</title>
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+            }
+
+            .game {
+                align-self: center;
+                border: none;
+                height: 100vh;
+                width: calc(100vh * 16 / 9);
+            }
+
+            .loading-outer {
+                width: 100vw;
+                display: flex;
+                justify-content: center;
+                z-index: 1;
+            }
+
+            .loading-inner {
+                height: 100vh;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+
+            .loading-card {
+                /* display: flex;
+                flex-direction: column;
+                justify-content: center; */
+                text-align: center;
+            }
+
+            .loading-title {
+                font-size: 2rem;
+                display: flex;
+
+                background: -webkit-linear-gradient(0deg, #f52552, #126cfc);
+                background-clip: text;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+
+            .rec {
+                color: #f52552;
+            }
+
+            .rui {
+                margin-left: 0.5rem;
+                color: #126cfc;
+            }
+
+            .loading-message {
+                font-size: 1.2rem;
+                margin-top: 0.2rem;
+                color: #606060;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="loading" class="loading-outer">
+            <div class="loading-inner">
+                <div class="loading-card">
+                    <div class="loading-title">
+                        <!-- <div class="rec">Recursive</div>
+                <div class="rui">Ruins</div> -->
+                        Recursive Ruins
+                    </div>
+                    <div class="loading-message">Loading...</div>
+                </div>
+            </div>
+        </div>
+        <script src="assets/wasm_exec.js"></script>
+        <script>
+            // Polyfill
+            // if (!WebAssembly.instantiateStreaming) {
+            //     WebAssembly.instantiateStreaming = async (resp, importObject) => {
+            //         const source = await (await resp).arrayBuffer();
+            //         return await WebAssembly.instantiate(source, importObject);
+            //     };
+            // }
+
+            WebAssembly.instantiateStreaming = async (resp, importObject) => {
+                const source = await (await resp).arrayBuffer();
+                return await WebAssembly.instantiate(source, importObject);
+            };
+
+            const go = new Go();
+
+            WebAssembly.instantiateStreaming(fetch("assets/text-automaton.wasm"), go.importObject).then((result) => {
+                go.run(result.instance);
+            });
+        </script>
+    </body>
+</html>
