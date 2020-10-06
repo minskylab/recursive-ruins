@@ -1,11 +1,11 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: recurrentruins
+  name: recursive-ruins
   namespace: minsky
   annotations:
     kubernetes.io/ingress.class: traefik
-    cert-manager.io/cluster-issuer: buypass
+    cert-manager.io/cluster-issuer: letsencrypt
 spec:
   tls:
     - hosts:
@@ -17,18 +17,18 @@ spec:
         paths:
           - path: /
             backend:
-              serviceName: recurrentruins
+              serviceName: recursive-ruins
               servicePort: web
 
 ---
 kind: Service
 apiVersion: v1
 metadata:
-  name: recurrentruins
+  name: recursive-ruins
   namespace: minsky
 spec:
   selector:
-    app: recurrentruins
+    app: recursive-ruins
   type: ClusterIP
   ports:
     - name: web
@@ -39,25 +39,25 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: recurrentruins
+  name: recursive-ruins
   namespace: minsky
   labels:
-    app: recurrentruins
+    app: recursive-ruins
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: recurrentruins
+      app: recursive-ruins
   template:
     metadata:
-      name: recurrentruins
+      name: recursive-ruins
       labels:
-        app: recurrentruins
+        app: recursive-ruins
     spec:
       imagePullSecrets:
         - name: regcred
       containers:
-        - name: recurrentruins
+        - name: recursive-ruins
           image: docker.minsky.cc/recurrent-ruins
           imagePullPolicy: Always
       restartPolicy: Always

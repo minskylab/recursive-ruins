@@ -193,6 +193,35 @@ func (g *Game) Update(screen *ebiten.Image) error {
 		}
 	}
 
+	if ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft) {
+		// d := 10
+		// height := len(g.board)
+		// width := xLength
+
+		sx, sy := ebiten.CursorPosition()
+		x, y := sx/fontWidth, sy/fontHeight
+
+		g.board[y][x] = totalStates
+
+		// for i := x - (d / 2); i < x+(d/2); i++ {
+		// 	for j := y - (d / 2); j < y+(d/2); j++ {
+		// 		if i <= 0 || j <= 0 || i > xLength-1 || j > yLength-1 {
+		// 			continue
+		// 		}
+
+		// 		dist := math.Sqrt(float64((i-x)*(i-x) + (j-y)*(j-y)))
+		// 		if dist > float64(d/2) {
+		// 			continue
+		// 		}
+
+		// 		if rand.Float32() < 0.5 {
+		// 			g.board[y][x] = totalStates
+		// 		}
+		// 	}
+		// }
+
+	}
+
 	nextBoard := g.nextState()
 	g.board = nextBoard
 
