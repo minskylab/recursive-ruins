@@ -1,6 +1,6 @@
 module github.com/minskylab/recursive-ruins
 
-go 1.14
+go 1.15
 
 require (
 	github.com/hajimehoshi/ebiten v1.12.0

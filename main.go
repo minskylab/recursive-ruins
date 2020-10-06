@@ -21,7 +21,7 @@ const (
 	screenWidth  = 1040
 	screenHeight = screenWidth * 9 / 16
 	fontHeight   = 12
-	totalStates  = 16
+	totalStates  = 8
 	fontWidth    = fontHeight - 2
 	yLength      = screenHeight / fontHeight
 	xLength      = screenWidth / fontWidth
@@ -154,7 +154,7 @@ func (g *Game) nextState() [][]uint8 {
 
 			n := g.neighbours(x, y)
 
-			if n == 3 || (n == 2 && g.board[y][x] == totalStates) {
+			if n == 8 || n == 3 || (n == 2 && g.board[y][x] == totalStates) {
 				nextBoard[y][x] = totalStates
 			} else {
 				if g.board[y][x] > 0 {
