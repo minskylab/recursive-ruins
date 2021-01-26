@@ -1,3 +1,22 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: recursive-ruins
+  namespace: minsky
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`rruins.experimental.minsky.cc`) && PathPrefix(`/`)
+      kind: Rule
+      services:
+        - name: recursive-ruins
+          port: 80
+  tls:
+    certResolver: letsencrypt
+
+
+---
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
